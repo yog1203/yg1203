@@ -1,0 +1,8 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+:root { color-scheme: light; }
+body { @apply bg-gradient-to-br from-brand-50 via-white to-brand-100; }
+.card { @apply bg-white/90 border border-brand-100 shadow-sm rounded-2xl; }
+.btn { @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-600 text-white hover:bg-brand-700 transition; }
+.link { @apply text-brand-700 hover:text-brand-900 underline; }
+h1,h2,h3 { @apply text-slate-800; }
+small.muted { @apply text-slate-500; }
