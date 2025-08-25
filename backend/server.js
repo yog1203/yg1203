@@ -24,7 +24,9 @@ app.use(cors({
     }
     return cb(new Error('Not allowed by CORS: ' + origin), false);
   },
-
+ methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Accept'],
+}));
 
 // const allowOrigin=process.env.FRONTEND_ORIGIN||'*'
 // app.use(cors({ origin: allowOrigin==='*'?true:allowOrigin, methods:['GET','POST','PUT','DELETE','OPTIONS'], allowedHeaders:['Content-Type','Accept'] }))
