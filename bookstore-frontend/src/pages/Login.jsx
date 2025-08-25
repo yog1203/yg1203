@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 export default function Login(){
   const nav=useNavigate()
-  const [email,setEmail]=React.useState('admin@example.com')
-  const [password,setPassword]=React.useState('admin123')
+  const [email,setEmail]=React.useState('')
+  const [password,setPassword]=React.useState('')
   const [err,setErr]=React.useState('')
   async function submit(e){ e.preventDefault(); setErr(''); try{ const d=await api('/api/auth/login',{method:'POST',body:{email,password}}); localStorage.setItem('user',JSON.stringify(d.user)); nav('/') }catch(e){ setErr(e.message) } }
   return (
@@ -21,7 +21,7 @@ export default function Login(){
         </label>
         {err && <div className="text-red-600 text-sm mb-2">{err}</div>}
         <button className="btn w-full">Login</button>
-        <div className="mt-3 text-xs text-slate-600">Try: admin/admin123, dist/dist123, user/user123</div>
+        <div className="mt-3 text-xs text-slate-600"></div>
       </form>
     </div>
   )
