@@ -12,8 +12,22 @@ const pool=new Pool({ connectionString:process.env.DATABASE_URL, ...(useSSL?{ssl
 
 const app=express()
 app.use(helmet()); app.use(compression()); app.use(morgan('dev'))
-const allowOrigin=process.env.FRONTEND_ORIGIN||'*'
-app.use(cors({ origin: allowOrigin==='*'?true:allowOrigin, methods:['GET','POST','PUT','DELETE','OPTIONS'], allowedHeaders:['Content-Type','Accept'] }))
+
+const originsEnv = process.env.FRONTEND_ORIGINS || process.env.FRONTEND_ORIGIN || '*';
+const allowedOrigins = originsEnv.split(',').map(s => s.trim()).filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, cb) {
+    if (!origin) return cb(null, true); // allow curl/health
+    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+      return cb(null, true);
+    }
+    return cb(new Error('Not allowed by CORS: ' + origin), false);
+  },
+
+
+// const allowOrigin=process.env.FRONTEND_ORIGIN||'*'
+// app.use(cors({ origin: allowOrigin==='*'?true:allowOrigin, methods:['GET','POST','PUT','DELETE','OPTIONS'], allowedHeaders:['Content-Type','Accept'] }))
 app.use(express.json())
 
 app.get('/api/health',(_req,res)=>res.json({ok:true,time:new Date().toISOString()}))
