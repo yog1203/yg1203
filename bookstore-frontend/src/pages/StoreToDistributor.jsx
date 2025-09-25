@@ -11,6 +11,8 @@ export default function StoreToDistributor(){
   const [err,setErr]=React.useState('')
   async function load(){ const [list,ds]=await Promise.all([ api('/api/storetodistributor'), api('/api/options/distributors') ]); setRows(list); setDists(ds) }
   React.useEffect(()=>{ load() },[])
+  function getDistName(id){ const d=dists.find(x=>String(x.id)===String(id)); return d?`${d.fname} ${d.lname}`:`#${id}` }
+  function edit(r){ setEditingId(r.id); setForm({ distributor_id: String(r.distributor_id||''), book_type: r.book_type||'', book_language: r.book_language||'', edition: String(r.edition||''), quantity: String(r.quantity||1), location: r.location||'', distribution_date: r.distribution_date? String(r.distribution_date).substring(0,10):'' }) }
   function setField(k,v){ setForm(f=>({...f,[k]:v})) }
   async function save(){ setErr(''); try{ const payload={...form, distributor_id:Number(form.distributor_id), edition:Number(form.edition), quantity:Number(form.quantity||1)}; const path=editingId?`/api/storetodistributor/${editingId}`:'/api/storetodistributor'; const method=editingId?'PUT':'POST'; await api(path,{method,body:payload}); setForm({ distributor_id:'', book_type:'', book_language:'', edition:'', quantity:1, location:'', distribution_date:'' }); setEditingId(null); await load() }catch(e){ setErr(e.message) } }
   async function del(id){ if(!confirm('Delete this record?')) return; await api(`/api/storetodistributor/${id}`,{method:'DELETE'}); await load() }
@@ -48,10 +50,11 @@ export default function StoreToDistributor(){
           <tbody>
             {rows.map(r=>(
               <tr key={r.id} className="border-t hover:bg-brand-50/40">
-                <td className="p-3">{r.id}</td><td className="p-3">{r.distributor_id}</td><td className="p-3">{r.book_type}</td>
+                <td className="p-3">{r.id}</td><td className="p-3">{getDistName(r.distributor_id)}</td><td className="p-3">{r.book_type}</td>
                 <td className="p-3">{r.book_language}</td><td className="p-3">{r.edition}</td><td className="p-3">{r.quantity}</td>
                 <td className="p-3">{r.location}</td><td className="p-3">{r.distribution_date}</td>
-                <td className="p-3 text-right"><button className="btn mr-2" onClick={()=>edit(r)}>Edit</button><button className="btn !bg-red-500 hover:!bg-red-600" onClick={()=>del(r.id)}>Delete</button></td>
+                <td className="p-3 text-right"><button className="btn mr-2" onClick={()=>edit(r)}>Edit</button><button className="btn !bg-red-500 hover:!bg-red-600" onClick={()=>del(r.id)}>Delete</button>
+                  <button className="btn ml-2" onClick={()=>edit(r)}>Edit</button></td>
               </tr>
             ))}
             {rows.length===0 && <tr><td className="p-4 text-center" colSpan={9}>No data</td></tr>}
