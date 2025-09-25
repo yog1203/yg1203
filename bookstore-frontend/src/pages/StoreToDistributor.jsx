@@ -6,7 +6,7 @@ const LOCS=['Mumbai','Pune']
 export default function StoreToDistributor(){
   const [rows,setRows]=React.useState([])
   const [dists,setDists]=React.useState([])
-  const [form,setForm]=React.useState({ distributor_id:'', book_type:'', book_language:'', edition:'', quantity:1, location:'', distribution_date:'' })
+  const [form,setForm]=React.useState({ distributor_id:'', book_type:BOOK_TYPES[0], book_language:LANGS[0], edition:'', quantity:1, location:LOCS[0], distribution_date:'' })
   const [editingId,setEditingId]=React.useState(null)
   const [err,setErr]=React.useState('')
   async function load(){ const [list,ds]=await Promise.all([ api('/api/storetodistributor'), api('/api/options/distributors') ]); setRows(list); setDists(ds) }
