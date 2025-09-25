@@ -19,7 +19,7 @@ export default function ReaderAssignments(){
       <h2 className="text-xl font-bold mb-4">Reader Assignments</h2>
       <div className="card p-4 mb-6">
         <div className="text-sm font-semibold mb-3">Add / Edit Assignment</div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <label className="text-sm flex flex-col gap-1"><span>Distributor *</span><select className="border rounded-lg px-3 py-2" value={form.distributor_id} onChange={e=>setField('distributor_id',e.target.value)} required>{dists.map(d=><option key={d.id} value={d.id}>{d.id} — {d.fname} {d.lname}</option>)}</select></label>
           <label className="text-sm flex flex-col gap-1"><span>Store *</span><select className="border rounded-lg px-3 py-2" value={form.store_id} onChange={e=>setField('store_id',e.target.value)} required>{stores.map(s=><option key={s.id} value={s.id}>{s.id} — {s.book_type} / {s.book_language} / ed {s.edition}</option>)}</select></label>
           <label className="text-sm flex flex-col gap-1"><span>Reader Type *</span><select className="border rounded-lg px-3 py-2" value={form.reader_type_id} onChange={e=>setField('reader_type_id',e.target.value)} required>{types.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}</select></label>
